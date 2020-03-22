@@ -4,7 +4,8 @@ const express=require('express'),
       graphqlHttp=require('express-graphql'),
       mongoose=require('mongoose'),
       graphqlSchema=require('./graphql/schema/index'),
-      graphqlResolvers=require('./graphql/resolvers/index')
+      graphqlResolvers=require('./graphql/resolvers/index'),
+      isAuth=require('./middleware/is-auth')
 
 mongoose.connect("mongodb+srv://Sai_99:shirdisai@cluster0-4bk2v.mongodb.net/merngraphqlDB",{
     useNewUrlParser:true,
@@ -14,7 +15,19 @@ mongoose.connect("mongodb+srv://Sai_99:shirdisai@cluster0-4bk2v.mongodb.net/mern
 
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json());
+app.use(isAuth);
 
+
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(200);
+    }
+    next();
+  });
+  
 
 
 app.use('/graphql',graphqlHttp({
