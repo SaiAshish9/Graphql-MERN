@@ -38,7 +38,7 @@ app.use('/graphql',graphqlHttp({
 
 
 
-const port=process.env.PORT||3001
+const port=process.env.PORT||8000
 
 app.get('/',(req,res,next)=>{
     res.status(200).json('Visit /graphql')
